@@ -25,7 +25,7 @@ vim /etc/selinux/config
 ```
 SELINUX=permissive
 ```
-
+  ##if you are gett error "curl: (7) Failed to connect to server.example.com port 80: Connection refused" ##Stop the firewalld 
 systemctl stop firewalld
 
 ## ELK Stack installation on server.example.com
