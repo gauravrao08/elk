@@ -5,6 +5,29 @@ server.example.com __(ELK master)__
 
 client.example.com __(client machine)__
 
+sestatus 
+```
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          permissive
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+
+```
+
+getenforce 
+
+vim /etc/selinux/config 
+```
+SELINUX=permissive
+```
+
+systemctl stop firewalld
+
 ## ELK Stack installation on server.example.com
 ###### Install Java 8
 ```
@@ -32,6 +55,8 @@ EOF
 ```
 yum install -y elasticsearch
 ```
+rpm -qc kibana
+
 ###### Enable and start elasticsearch service
 ```
 systemctl daemon-reload
