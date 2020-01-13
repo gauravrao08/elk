@@ -173,7 +173,38 @@ yum install -y filebeat
 scp server.example.com:/etc/pki/tls/certs/logstash.crt /etc/pki/tls/certs/
 ```
 ###### Configure Filebeat 
-[Refer my youtube video]
+```
+- type: log
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - /var/log/*.log
+         #or any one of them *.log for all log or message and secure you need only message and secure log
+	- /var/log/message
+	- /var/log/secure
+    #- c:\programdata\elasticsearch\logs\*
+
+
+#-------------------------- Elasticsearch output ------------------------------
+#output.elasticsearch:
+  # Array of hosts to connect to.
+ # hosts: ["localhost:9200"]
+
+
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["server.example.com:5044"]
+
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash.crt"]
+
+```
 ###### Enable and start Filebeat service
 ```
 systemctl enable filebeat
