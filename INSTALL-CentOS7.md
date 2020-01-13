@@ -55,7 +55,8 @@ EOF
 ```
 yum install -y elasticsearch
 ```
-rpm -qc kibana
+rpm -qc elasticsearch    ##to check the path of all the package or conf file
+journalctl --unit elasticsearch  ##to see the current logs
 
 ###### Enable and start elasticsearch service
 ```
@@ -189,20 +190,21 @@ scp server.example.com:/etc/pki/tls/certs/logstash.crt /etc/pki/tls/certs/
 
 
 #-------------------------- Elasticsearch output ------------------------------
-#output.elasticsearch:
+#output.elasticsearch:   			##we dont want to send log to elasticsearch therefore comment all line
   # Array of hosts to connect to.
  # hosts: ["localhost:9200"]
+ 
 
 
 
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["server.example.com:5044"]
+  hosts: ["server.example.com:5044"]       ##add the ELK server details
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
-  ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash.crt"]
+  ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash.crt"] 		##add the cetificate path
 
 ```
 ###### Enable and start Filebeat service
@@ -210,6 +212,7 @@ output.logstash:
 systemctl enable filebeat
 systemctl start filebeat
 ```
+journalctl --unit filebeat
 ### Configure Kibana Dashboard
 All done. Now you can head to Kibana dashboard and add the index.
 
