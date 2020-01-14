@@ -213,6 +213,15 @@ systemctl enable filebeat
 systemctl start filebeat
 ```
 journalctl --unit filebeat
+
+##Enable apache log in kibana
+```
+filebeat test output
+
+filebeat modules list
+
+filebeat modules enable apache2
+```
 ### Configure Kibana Dashboard
 All done. Now you can head to Kibana dashboard and add the index.
 
