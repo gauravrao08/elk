@@ -42,6 +42,113 @@ output.logstash:
 ```
 
 on ELK server
+
+# Installation instructions for CentOS 7
+
+## Assumptions
+server.example.com __(ELK master)__
+
+client.example.com __(client machine)__
+
+sestatus 
+```
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          permissive
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+
+```
+
+getenforce 
+
+vim /etc/selinux/config 
+```
+SELINUX=permissive
+```
+  ##if you are gett error "curl: (7) Failed to connect to server.example.com port 80: Connection refused" ##Stop the firewalld 
+systemctl stop firewalld
+
+## ELK Stack installation on server.example.com
+###### Install Java 8
+```
+yum install -y java-1.8.0-openjdk
+```
+###### Import PGP Key
+```
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+```
+###### Create Yum repository
+```
+cat >>/etc/yum.repos.d/elk.repo<<EOF
+[ELK-6.x]
+name=ELK repository for 6.x packages
+baseurl=https://artifacts.elastic.co/packages/6.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+```
+### Elasticsearch
+###### Install Elasticsearch
+```
+yum install -y elasticsearch
+```
+rpm -qc elasticsearch    ##to check the path of all the package or conf file
+journalctl --unit elasticsearch  ##to see the current logs
+
+###### Enable and start elasticsearch service
+```
+systemctl daemon-reload
+systemctl enable elasticsearch
+systemctl start elasticsearch
+```
+### Kibana
+###### Install kibana
+```
+yum install -y kibana
+```
+###### Enable and start kibana service
+```
+systemctl daemon-reload
+systemctl enable kibana
+systemctl start kibana
+```
+###### Install Nginx
+```
+yum install -y epel-release
+yum install -y nginx
+```
+###### Create Proxy configuration
+Remove server block from the default config file /etc/nginx/nginx.conf
+And create a new config file
+```
+cat >>/etc/nginx/conf.d/kibana.conf<<EOF
+server {
+    listen 80;
+    server_name server.example.com;
+    location / {
+        proxy_pass http://localhost:5601;
+    }
+}
+EOF
+```
+###### Enable and start nginx service
+```
+systemctl enable nginx
+systemctl start nginx
+```
+### Logstash
+###### Install logstash
+```
+yum install -y logstash
+```
 vim /etc/logstash/conf.d/01-logstash-simple.conf
 
 https://www.elastic.co/guide/en/logstash/current/logstash-config-for-filebeat-modules.html
