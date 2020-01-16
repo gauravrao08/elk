@@ -44,6 +44,8 @@ output.logstash:
 on ELK server
 vim /etc/logstash/conf.d/01-logstash-simple.conf
 
+https://www.elastic.co/guide/en/logstash/current/logstash-config-for-filebeat-modules.html
+
 ```
 input {
   beats {
