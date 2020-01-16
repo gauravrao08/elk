@@ -256,5 +256,26 @@ filebeat modules list
 
 filebeat modules enable apache2
 ```
+
+vim /etc/filebeat/modules.d/apache2.yml
+```
+- module: apache2
+  # Access logs
+  access:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths: ["/var/log/httpd/access_log"]
+
+  # Error logs
+  error:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths: ["/var/log/httpd/error_log"]
+
+```
 ### Configure Kibana Dashboard
 All done. Now you can head to Kibana dashboard and add the index.
