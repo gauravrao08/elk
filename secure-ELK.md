@@ -52,5 +52,7 @@ systemctl start kibana
 
 
 login to kibana dashboard login with 
+
 user : elastic
+
 password : from the auto generated password of "elastic"
