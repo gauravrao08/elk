@@ -176,6 +176,10 @@ tail -f /var/log/elasticsearch/elasticsearch.log
 check you can see metadata log 
 
 ###### Enable and Start logstash service
+vim /etc/logstash/logstash.yml
+```
+http.host: "0.0.0.0"
+```
 ```
 systemctl enable logstash
 systemctl start logstash
