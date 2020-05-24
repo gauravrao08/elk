@@ -59,6 +59,10 @@ EOF
 ```
 yum install -y elasticsearch
 ```
+```
+check status of elasticsearch
+curl -X GET "localhost:9200"  
+```
 rpm -qc elasticsearch    ##to check the path of all the package or conf file
 journalctl --unit elasticsearch  ##to see the current logs
 
@@ -171,6 +175,7 @@ output {
   }
 }
 ```
+sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash -t
 
 tail -f /var/log/elasticsearch/elasticsearch.log
 check you can see metadata log 
