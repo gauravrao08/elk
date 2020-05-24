@@ -105,7 +105,9 @@ systemctl start nginx
 yum install -y logstash
 ```
 ###### Generate SSL Certificates
+
 ```
+##not needed
 openssl req -subj '/CN=server.example.com/' -x509 -days 3650 -nodes -batch -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash.key -out /etc/pki/tls/certs/logstash.crt
 ```
 ###### Create Logstash config file
@@ -174,6 +176,7 @@ yum install -y filebeat
 scp server.example.com:/etc/pki/tls/certs/logstash.crt /etc/pki/tls/certs/
 ```
 ###### Configure Filebeat 
+#we dont want to send log to elasticsearch therefore comment all line
 ```
 - type: log
 
@@ -190,7 +193,7 @@ scp server.example.com:/etc/pki/tls/certs/logstash.crt /etc/pki/tls/certs/
 
 
 #-------------------------- Elasticsearch output ------------------------------
-#output.elasticsearch:   			##we dont want to send log to elasticsearch therefore comment all line
+#output.elasticsearch:   			#we dont want to send log to elasticsearch therefore comment all line
   # Array of hosts to connect to.
  # hosts: ["localhost:9200"]
  
