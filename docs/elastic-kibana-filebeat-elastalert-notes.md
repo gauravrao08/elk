@@ -60,7 +60,21 @@ sudo apt-get install postfix mailutils libsasl2-2 ca-certificates libsasl2-modul
 ```
 
 ### Postfix configuration to add
+
 ```
+vim /etc/postfix/main.cf
+-------------
+inet_interfaces = localhost
+or
+inet_interfaces = all
+
+and
+inet_protocols = ipv4
+
+## if you will not menstion ipv4 then you mail will be in queue
+
+----------------
+
 relayhost = [smtp.gmail.com]:587
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
@@ -71,12 +85,16 @@ smtp_use_tls = yes
 ```
 ```
 cat /etc/postfix/sasl_passwd
-[smtp.gmail.com]:587	server.jbs@gmail.com:qpdm vkxv hdpc boja
+
+[smtp.gmail.com]:587	gauravyafav1991gy@gmail.com:qpdm vkxv hdpc boja
+
 sudo chmod 400 /etc/postfix/sasl_passwd
 sudo postmap /etc/postfix/sasl_passwd
 sudo systemctl restart postfix
 ```
 ```
-echo "Testing" | mail -s "Test Email" server.jbs@gmail.com
+echo "Testing" | mail -s "Test Email" gauravyadav1991gy@gmail.com
 sudo postqueue -p
+postqueue -f
+
 ```
