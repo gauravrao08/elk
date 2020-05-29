@@ -180,6 +180,8 @@ sudo -u logstash /usr/share/logstash/bin/logstash --path.settings /etc/logstash 
 tail -f /var/log/elasticsearch/elasticsearch.log
 check you can see metadata log 
 
+tailf /var/log/logstash/logstash-plain.log
+
 ###### Enable and Start logstash service
 vim /etc/logstash/logstash.yml
 ```
