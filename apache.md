@@ -221,14 +221,13 @@ filebeat.inputs:
 # Below are the input specific configurations.
 
 - type: log
-
-  # Change to true to enable this input configuration.
   enabled: true
-
-  # Paths that should be crawled and fetched. Glob based paths.
   paths:
-    - /var/log/httpd/*log
-    #- c:\programdata\elasticsearch\logs\*
+     - /var/log/httpd/masters.insurancedekho.com_error.log
+     - /var/log/httpd/masters.insurancedekho.com_access_log
+  fields:
+      tags: ["masters-insurance"]
+
 #============================== Kibana =====================================
 
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
@@ -254,6 +253,7 @@ output.logstash:
 
 ###### Enable and start Filebeat service
 ```
+filebeat test config
 systemctl enable filebeat
 systemctl start filebeat
 ```
