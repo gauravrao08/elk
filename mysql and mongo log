@@ -1,0 +1,65 @@
+filter {
+  # mysql escapes double quotes with backslashes, but
+  # ruby expects pairs of double quotes
+  if [event][module] == "mysql" {
+
+
+ grok {
+        match => [ "message", "^# User@Host: %{USER:query_user}\[%{WORD}\]%{SPACE}@%{SPACE}\[%{IPORHOST:query_ip}\]" ]
+    }
+    grok {
+        match => [ "message", "^# Query_time: %{NUMBER:query_time:float}%{SPACE}Lock_time:%{SPACE}%{NUMBER:lock_time:float}%{SPACE}Rows_sent:%{SPACE}%{NUMBER:rows_sent:int}%{SPACE}Rows_examined:%{SPACE}%{NUMBER:rows_examined:int}" ]
+    }
+    grok {
+        match => [ "message", "(?m)SET timestamp=%{NUMBER:timestamp};%{GREEDYDATA:query}" ]
+    }
+    date {
+        match => [ "timestamp", "UNIX" ]
+    }
+    mutate {
+        remove_field => "timestamp"
+    }
+
+}
+
+}
+
+--------------------------
+filter {
+#    if [type] == "log" {
+     if [event][module] == "mongodb" {
+        grok {
+            match => {"message" => "%{TIMESTAMP_ISO8601:timestamp}\s+%{MONGO3_SEVERITY:severity}\s+%{MONGO3_COMPONENT:component}\s+(?:\[%{DATA:context}\])?\s+%{GREEDYDATA:message}"}
+            overwrite => [ "message" ]
+            remove_tag => ["beats_input_codec_plain_applied"]
+        }
+
+        if [context] =~ "^conn" {
+            grok {
+               match => {"context" => "conn%{NUMBER:connect_id:int}"}
+            }
+        }
+
+        if [message] =~ "ms$"  {
+             grok {
+               match => {"message" => "%{WORD:op_type}\s+.*}.*\}(\s+%{NUMBER:spend_time:int}ms$)?"}
+            }
+        }
+
+       if [message] =~ "^end\s+connection" {
+            grok {
+               match => {"message" => "end\s+connection\s+%{IPORHOST:client_ip}:%{NUMBER:client_port:int}.*"}
+               add_tag => ["end_connection"]
+            }
+        }
+
+        if [message] =~ "^connection\s+accepted\s+from" {                                                                                                                                                                                                                                 grok {
+               match => {"message" => "connection\s+accepted\s+from\s+%{IPORHOST:client_ip}:%{NUMBER:client_port:int}\s+#%{NUMBER:connect_id:int}.*"}                                                                                                                                        add_tag => ["start_connection"]
+            }                                                                                                                                                                                                                                                                         }
+                                                                                                                                                                                                                                                                                      date {
+            match => [ "timestamp", "UNIX", "YYYY-MM-dd HH:mm:ss", "ISO8601"]
+            remove_field => [ "timestamp" ]
+        }
+    }
+}
+
