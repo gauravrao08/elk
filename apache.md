@@ -227,6 +227,13 @@ filebeat.inputs:
      - /var/log/httpd/masters.insurancedekho.com_access_log
   fields:
       tags: ["masters-insurance"]
+      
+
+#if you include multiple line in gruk
+multiline.pattern: '^# Time:'
+multiline.negate: true
+multiline.match: after
+
 
 #============================== Kibana =====================================
 
@@ -243,11 +250,19 @@ setup.kibana:
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["server.example.com:5044"]
-
+  hosts: ["server-IP:5044"]
+  bulk_max_size: 1024
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
   #ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash.crt"]
+  
+----------------------------------  
+  fields:
+       tags: ["ub-master"]
+processors:
+- add_tags:
+    tags: [production]
+    target: "environment"
 
 ```
 
