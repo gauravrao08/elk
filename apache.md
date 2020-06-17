@@ -62,6 +62,8 @@ yum install -y elasticsearch
 ```
 check status of elasticsearch
 curl -X GET "localhost:9200"  
+
+curl -uelastic:password -X GET "localhost:9200"
 ```
 rpm -qc elasticsearch    ##to check the path of all the package or conf file
 journalctl --unit elasticsearch  ##to see the current logs
