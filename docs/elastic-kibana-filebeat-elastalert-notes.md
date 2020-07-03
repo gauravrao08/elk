@@ -68,6 +68,31 @@ Edit config.yaml and update es_host with IP address or dns name of the elasticse
 elastalert-create-index
 ```
 Configure example_rules/example_frequency.yaml
+
+### example_rules/example_frequency.yaml
+
+```
+name: mail subject
+type: frequency
+index: index_pattern_name*
+num_events: 1
+timeframe:
+  hours: 1
+filter:
+- term:
+    environment: "production"
+alert:
+- "email"
+email:
+- "gauravyadav1991gy@gmail.com"
+
+smtp_host: "smtp_host_name"
+smtp_port: 587
+smtp_ssl: false
+from_addr: "name_from_which_you_will_name@SMTP host"
+smtp_auth_file: "/etc/mail/auth.yaml" 
+```
+
 ### Testing a rule
 ```
 elastalert-test-rule --config config.yaml example_rules/example_frequency.yaml
@@ -76,6 +101,7 @@ elastalert-test-rule --config config.yaml example_rules/example_frequency.yaml
 ```
 python -m elastalert.elastalert --verbose --rule example_frequency.yaml
 ```
+
 
 ## Postfix Gmail SMTP
 Enable 2-factor authentication and Generate app password
