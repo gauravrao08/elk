@@ -63,3 +63,25 @@ filter {
     }
 }
 
+
+========================================================================
+filter {
+
+  mutate {
+         gsub => [ "message", "[\n\t]+", " "]
+  }
+ 
+  grok {
+    match => ["message", "duration: %{DATA:duration:int} ms"]
+    tag_on_failure => []
+        add_tag => "sql_message"
+  }
+# See postgres configuration - a message with 'statement: ' is a slow query
+  grok  {
+        match =>["message", "statement: %{GREEDYDATA:statement}"]
+        tag_on_failure => []
+        add_tag => "slow_statement"
+  }
+
+}
+
