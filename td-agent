@@ -1,0 +1,51 @@
+fluent-gem install fluent-plugin-mysqlslowquery
+or
+cd /opt/td-agent/embedded/bin/
+./fluent-gem install fluent-plugin-mysqlslowquery
+
+
+vim /etc/td-agent/td-agent.conf
+===========================
+<source>
+  type mysql_slow_query
+  path /path/to/mysqld-slow.log
+  tag productname.slow_query
+</source>
+============================
+
+
+or 
+-----------------
+<source>
+  type mysql_slow_query
+  path /var/lib/mysql/ip-slow.log
+  pos_file /var/log/fluentd/lms-log-file.log.pos
+  tag mysqld.slow_query
+   <parse>
+     @type none
+   </parse>
+</source>
+
+<filter  mysqld.slow_query>
+  @type record_transformer
+  <record>
+    hostname "#{Socket.gethostname}"
+    tag ${tag}
+  </record>
+</filter>
+
+     <match mysqld.slow_query>
+           @type elasticsearch
+           log_level info
+           include_tag_key false
+           host IP_of_elasticsearch_server
+           port 9200
+           logstash_prefix index_name_on_kibana
+           logstash_format true
+           buffer_chunk_limit 10M
+           buffer_queue_limit 40960
+           flush_interval 10s
+           max_retry_wait 10
+           disable_retry_limit
+           num_threads 1
+        </match>
