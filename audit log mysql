@@ -1,0 +1,1 @@
+%{NUMBER:date} %{TIME:time},%{JAVACLASS:aws},%{WORD:user},%{IP:ip},%{NUMBER:num},%{NUMBER:num2},%{WORD:action},%{WORD:user},%{GREEDYDATA:query}
