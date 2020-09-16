@@ -1,0 +1,38 @@
+
+name: FS-Middeware Error Alert
+
+
+type: frequency
+
+ted
+index: fs-middleware*
+
+num_events: 1
+
+
+timeframe:
+  hours: 1
+
+
+filter:
+- query:
+    query_string:
+      query: "level1: error AND context: client_response"
+
+
+
+alert:
+- "email"
+
+
+email:
+- "devopsggn@example.com"
+- "arjun.gaurav@example.com"
+
+include: ["timestamp","agent","client","data","message","vendor","purpose"]
+
+smtp_host: "nagios.example.com"
+smtp_port: 587
+smtp_ssl: false
+from_addr: "ELK@nagios.example.info"
+smtp_auth_file: "/etc/mail/auth.yaml" 
