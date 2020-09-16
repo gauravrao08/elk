@@ -1,10 +1,8 @@
 
 name: FS-Middeware Error Alert
 
-
 type: frequency
 
-ted
 index: fs-middleware*
 
 num_events: 1
