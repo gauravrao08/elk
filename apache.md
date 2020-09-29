@@ -67,6 +67,8 @@ curl -uelastic:password -X GET "localhost:9200"
 
 curl -uelastic:password localhost:9200/_cat/health
 curl localhost:9200/_cat/health
+
+curl -XGET http://localhost:9200/_cat/shards/| grep kibana   ## to check the kibana status
 ```
 rpm -qc elasticsearch    ##to check the path of all the package or conf file
 journalctl --unit elasticsearch  ##to see the current logs
@@ -111,6 +113,10 @@ EOF
 ```
 systemctl enable nginx
 systemctl start nginx
+```
+
+```
+curl -XGET http://localhost:9200/_cat/shards/| grep kibana   ## to check the kibana status
 ```
 ### Logstash
 ###### Install logstash
