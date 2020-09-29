@@ -1,3 +1,17 @@
+FLUENTD
+curl -L https://toolbelt.treasuredata.com/sh/install-amazon1-td-agent3.sh | sh
+		or
+curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
+------------------
+
+cd /opt/td-agent/embedded/
+sudo /opt/td-agent/embedded/bin/gem install fluent-plugin-elasticsearch
+
+Fluentd-gem install fluent-plugin-elb-log
+fluent-gem install fluent-plugin-mysqlslowquery
+fluent-gem install fluent-plugin-mongo-slow-query
+==================================================================
+
 fluent-gem install fluent-plugin-mysqlslowquery
 or
 cd /opt/td-agent/embedded/bin/
@@ -49,3 +63,18 @@ or
            disable_retry_limit
            num_threads 1
         </match>
+       
+   ============================
+        In case of amy error:
+
+curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent3.sh | sh
+
+
+sudo yum install ruby
+
+
+cd /var/log/
+mkdir fluentd
+chmod 777 fluentd/
+
+
