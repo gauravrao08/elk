@@ -1,0 +1,58 @@
+https://jee-appy.blogspot.com/2016/11/elasticsearch-backup-and-restore.html
+
+#Backup and restore index from snapshot
+
+curl localhost:9200/_cat/health
+curl -XGET http://localhost:9200/_cat/shards/
+curl localhost:9200/_snapshot
+
+#list all the index in elasticsearch
+curl 'localhost:9200/_cat/indices?v'
+
+mkdir elasticsearch-backup
+chown -R elasticsearch. elasticsearch-backup/
+
+vim elasticsearch.yml
+```
+path.repo: /Users/zombie/elasticsearch-backup
+```
+
+
+#This will create the logical repository
+
+curl -X PUT "localhost:9200/_snapshot/my_backup?pretty" -H 'Content-Type: application/json' -d'
+{
+  "type": "fs",
+  "settings": {
+    "location": "/etc/elasticsearch/elasticsearch-backup/honda-mongodb-log-folder",
+    "compress": true
+  }
+}
+'
+------------------------
+curl -X GET "localhost:9200/_snapshot/my_backup?pretty"
+
+------------------------
+#Now we will take the backup of singel index or indices(new-30nov2020  this is snapshort name)
+
+curl -X PUT "localhost:9200/_snapshot/my_backup/new-30nov2020?wait_for_completion=true&pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "honda-mongodb-log*",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}
+'
+-------------------
+curl localhost:9200/_snapshot/my_backup/new-30nov2020
+
+-----------------
+#restore snapshot
+1. COPY elasticsearch-backup same to same path
+2. change path.repo in elasticsearch.yml
+3. set logical repository
+4. restore with below command
+curl -X POST "localhost:9200/_snapshot/my_backup/new-30nov2020/_restore?pretty"
+
+
+
+
