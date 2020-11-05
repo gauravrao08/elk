@@ -73,6 +73,14 @@ curl -XGET http://localhost:9200/_cat/shards/| grep kibana   ## to check the kib
 rpm -qc elasticsearch    ##to check the path of all the package or conf file
 journalctl --unit elasticsearch  ##to see the current logs
 
+```
+vim /etc/elasticsearch/jvm.options
+
+-Xms4g
+-Xmx4g
+
+#replace 4 to number of GB to wnat to allocate to elasticsearch
+```
 ###### Enable and start elasticsearch service
 ```
 systemctl daemon-reload
@@ -198,6 +206,15 @@ vim /etc/logstash/logstash.yml
 ```
 http.host: "0.0.0.0"
 ```
+```
+ vim /etc/logstash/jvm.options
+-Xms2g
+-Xmx2g
+
+replace 2 GB with number you want to allocate memory to logstash
+
+```
+
 ```
 systemctl enable logstash
 systemctl start logstash
