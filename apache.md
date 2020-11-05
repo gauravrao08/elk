@@ -117,6 +117,13 @@ server {
 }
 EOF
 ```
+```
+vim /etc/default/kibana
+NODE_OPTIONS="--max-old-space-size=2096"
+
+#if you want to allocate memeory to kibana change 2096 vale in MB
+```
+
 ###### Enable and start nginx service
 ```
 systemctl enable nginx
