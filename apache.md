@@ -285,6 +285,19 @@ processors:
 - add_tags:
     tags: [production]
     target: "environment"
+    
+#================================ Logging ===================================== #so that filebeat log will create in seperate file not in messages
+logging:
+  level: error
+  to_files: true
+  to_syslog: false
+  json: true
+  files:
+    path: '/var/log/filebeat'
+    name: 'filebeat'
+    keepfiles: '3'
+    permissions: '0644'
+
 
 ```
 
