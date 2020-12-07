@@ -40,7 +40,7 @@ elastalert-test-rule --config config.yaml example_rules/rule_name.yaml
 ```
 # this will not send mail it is just for checking error if any 
 ```
-python -m elastalert.elastalert --verbose --rule rule_name.yaml
+python3 -m elastalert.elastalert --verbose --rule rule_name.yaml
 
 # this will send mail 
 #uuse python3 
