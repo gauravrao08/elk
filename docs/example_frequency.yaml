@@ -1,21 +1,79 @@
+# install elast alert in centos 7
+```
+yum install -y python3
+yum search pip | grep python3
 
+pip3 -V 
+
+git clone https://github.com/Yelp/elastalert.git
+
+cd elastalert
+pip3 install "setuptools>=11.3"
+pip3 install pyOpenSSL
+yum install gcc -y
+yum install python3-devel -y
+
+python3 setup.py install
+
+pip3 install "elasticsearch>=5.0.0"
+cp config.example.yaml config.yaml
+
+
+
+yum install python36
+yum install python36-devel
+yum install python36-setuptools
+```
+Edit config.yaml and update es_host with IP address or dns name of the elasticsearch server
+```
+elastalert-create-index
+```
+Configure example_rules/example_frequency.yaml
+
+### example_rules/example_frequency.yaml
+
+```
+name: mail subject
+type: frequency
+index: index_pattern_name*
+num_events: 1
+timeframe:
+  hours: 1
+filter:
+- term:
+    environment: "production"
+alert:
+- "email"
+email:
+- "gauravyadav1991gy@gmail.com"
+
+smtp_host: "smtp_host_name"
+smtp_port: 587
+smtp_ssl: false
+from_addr: "name_from_which_you_will_name@SMTP host"
+smtp_auth_file: "/etc/mail/auth.yaml" 
+```
 name: FS-Middeware Error Alert
-
+#send mail subject
 type: frequency
 
 index: fs-middleware*
-
+#index from elasticseach
 num_events: 1
-
+#number of events or error
 
 timeframe:
   hours: 1
-
+#time frame can in second and minutes:
 
 filter:
 - query:
     query_string:
       query: "level1: error AND context: client_response"
+      
+      #this will search both "level1 = error" and "context = client_response"
+      #if you want to use OR any single match will send the mail
+      #query: "sub_module: submitProposal OR error_message: Proposal failed from insurer"
 
 
 
@@ -25,12 +83,28 @@ alert:
 
 email:
 - "devopsggn@example.com"
-- "arjun.gaurav@example.com"
+- "gauravyadav1991gy@gmail.com"
 
 include: ["timestamp","agent","client","data","message","vendor","purpose"]
 
-smtp_host: "nagios.example.com"
+smtp_host: "nagios.example.com"    # SMTP host name 
 smtp_port: 587
 smtp_ssl: false
-from_addr: "ELK@nagios.example.info"
-smtp_auth_file: "/etc/mail/auth.yaml" 
+from_addr: "ELK@nagios.example.info"    # email adress where mail will be send from
+smtp_auth_file: "/etc/mail/auth.yaml"    # auth file contain username and password of SMTP
+
+
+
+### Testing a rule
+```
+elastalert-test-rule --config config.yaml example_rules/rule_name.yaml
+
+# this will not send mail it is just for checking error if any 
+```
+### Running elastalert
+```
+python -m elastalert.elastalert --verbose --rule rule_name.yaml
+
+# this will send mail 
+#uuse python3 
+```
