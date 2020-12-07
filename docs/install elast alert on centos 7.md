@@ -33,13 +33,11 @@ Configure example_rules/example_frequency.yaml
 ### example_rules/example_frequency.yaml
 
 ```
-
+elastalert-test-rule --config config.yaml example_rules/rule_name.yaml
 
 
 ### Testing a rule
 ```
-elastalert-test-rule --config config.yaml example_rules/rule_name.yaml
-
 # this will not send mail it is just for checking error if any 
 ```
 ### Running elastalert
