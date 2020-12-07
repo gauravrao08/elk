@@ -46,4 +46,10 @@ python3 -m elastalert.elastalert --verbose --rule rule_name.yaml
 #uuse python3 
 ```
 
+```
+#if you have multiple rules then create folder rules and put all yaml file inside it and change config.yaml ==> "rules_folder: rules"
+python -m elastalert.elastalert --config ./config.yaml --verbose
+will will load all the rules inside the rules folder 
+```
+
 
