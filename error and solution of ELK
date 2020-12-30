@@ -21,3 +21,18 @@ curl -u elastic:xAlubuMyB85g  -XPUT "localhost:9200/index_name/_settings" -H 'Co
     }
 }
 '
+
+
+## error in agent: logstash, td-agent, td-agent-bit  
+##error : total shards, but this cluster currently has [2000]/[2000] maximum shards open;"
+
+#increase the shards
+
+----------------------------------------------
+PUT /_cluster/settings
+{
+  "persistent": {
+"cluster.max_shards_per_node": "150000"
+  }
+}
+--------------------------------------------
