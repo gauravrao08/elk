@@ -138,7 +138,7 @@ smtp_use_tls = yes
 ```
 cat /etc/postfix/sasl_passwd
 
-[smtp.gmail.com]:587	gauravyafav1991gy@gmail.com:qpdm vkxv hdpc boja
+[smtp.gmail.com]:587	gauravyadav1991gy@gmail.com:qpdm vkxv hdpc boja
 
 sudo chmod 400 /etc/postfix/sasl_passwd
 sudo postmap /etc/postfix/sasl_passwd
@@ -146,6 +146,8 @@ sudo systemctl restart postfix
 ```
 ```
 echo "Testing" | mail -s "Test Email" gauravyadav1991gy@gmail.com
+or
+echo "This is the body" | mail -s "Subject" -aFrom:Harry\<ubuntu@ip-SES.ap-southeast-1.compute.internal\> gauravyadav1991gy@gmail.com
 sudo postqueue -p
 postqueue -f
 
